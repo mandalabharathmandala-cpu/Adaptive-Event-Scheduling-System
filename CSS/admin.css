@@ -2,7 +2,7 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: "Segoe UI", Arial, Helvetica, sans-serif;
 }
 
 body {
@@ -11,27 +11,188 @@ body {
     min-height: 100vh;
 }
 
+/* NAVBAR */
 .navbar {
     background-color: #063da2;
     padding: 16px;
     text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+.navbar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.navbar-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-profile,
+.btn-logout {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-profile:hover,
+.btn-logout:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+}
+
+/* MODAL STYLES */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-content {
+    background: white;
+    margin: 10% auto;
+    padding: 40px 35px;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 420px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: slideDown 0.3s ease;
+    position: relative;
+    color: #333;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-content h2 {
+    margin: 0 0 30px 0;
+    color: #063da2;
+    text-align: center;
+    font-size: 1.8rem;
+}
+
+.modal-content p {
+    color: #666;
+}
+
+.close {
+    color: #999;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close:hover,
+.close:focus {
+    color: #d1d5db;
+}
+
+.modal-content form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.modal-content input {
+    padding: 12px 15px;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    font-family: inherit;
+    color: #333;
+}
+
+.modal-content input:focus {
+    outline: none;
+    border-color: #063da2;
+    box-shadow: 0 0 0 3px rgba(6, 61, 162, 0.1);
+}
+
+.modal-content input::placeholder {
+    color: #9ca3af;
+}
+
+.modal-content button {
+    padding: 12px 20px;
+    margin-top: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, #063da2, #0493e0);
+    color: white;
+}
+
+.modal-content button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(6, 61, 162, 0.4);
+}
+
+/* CONTAINER */
 .container {
     padding: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .stats {
     margin-bottom: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+}
+
+.stats h2 {
+    font-size: 1.5rem;
 }
 
 .stats span {
-    color: #007bff;
+    color: #ffd700;
+    font-weight: bold;
 }
 
+/* TABLE SECTION */
 .table-section {
     margin-bottom: 40px;
     overflow-x: auto;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
 }
 
 .event-table {
@@ -50,6 +211,7 @@ body {
 .event-table td {
     padding: 12px;
     text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .event-table tbody tr:hover {
@@ -66,41 +228,113 @@ body {
     padding: 8px 12px;
     cursor: pointer;
     color: #ffffff;
-    border-radius: 4px;
+    border-radius: 6px;
     font-size: 14px;
+    transition: all 0.3s ease;
+    font-weight: 600;
 }
 
 .btn-primary {
-    background-color: #007bff;
+    background: linear-gradient(135deg, #0493e0, #063da2);
+}
+
+.btn-primary:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(6, 61, 162, 0.3);
 }
 
 .btn-secondary {
-    background-color: #0493e0;
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid white;
 }
 
-.btn:hover {
-    opacity: 0.9;
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+}
+
+/* FORM SECTION */
+.form-section {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 30px;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
 }
 
 .form-section h2 {
-    margin-bottom: 16px;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
 }
 
 .event-form {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 12px;
+    gap: 15px;
 }
 
-.event-form input {
-    padding: 10px;
-    border-radius: 4px;
-    border: none;
+.event-form input,
+.event-form textarea {
+    padding: 12px;
+    border-radius: 8px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+    font-family: inherit;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+.event-form input:focus,
+.event-form textarea:focus {
+    outline: none;
+    border-color: white;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
+}
+
+.event-form button {
+    grid-column: 1 / -1;
+    padding: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+/* FOOTER */
 .footer {
     text-align: center;
     padding: 16px;
     background-color: #063da2;
     margin-top: 40px;
 }
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .navbar-content {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .container {
+        padding: 15px;
+    }
+
+    .table-section {
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+
+    .form-section {
+        padding: 15px;
+    }
+
+    .event-form {
+        grid-template-columns: 1fr;
+    }
+
+    .actions {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .modal-content {
+        margin: 30% auto;
+        width: 95%;
+    }

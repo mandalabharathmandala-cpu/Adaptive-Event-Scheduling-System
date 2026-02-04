@@ -7,8 +7,41 @@
 </head>
 <body>
 
+<!-- Admin Sign In Modal -->
+<div id="adminAuthModal" class="modal">
+    <div class="modal-content">
+        <h2>Admin Sign In</h2>
+        <form id="adminSigninForm">
+            <input type="text" placeholder="Admin ID" required>
+            <input type="password" placeholder="Password" required>
+            <button type="submit" class="btn btn-primary">Sign In</button>
+        </form>
+    </div>
+</div>
+
+<!-- Admin Profile Modal -->
+<div id="adminProfileModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeAdminModal('adminProfileModal')">&times;</span>
+        <h2>Admin Profile</h2>
+        <div id="adminProfileInfo" style="text-align: left; color: #333;">
+            <p><strong>Admin ID:</strong> <span id="adminId">ADMIN001</span></p>
+            <p><strong>Name:</strong> <span id="adminName">Administrator</span></p>
+            <p><strong>Events Created:</strong> <span id="adminEventsCreated">0</span></p>
+            <p><strong>Last Login:</strong> <span id="adminLastLogin">Today</span></p>
+        </div>
+        <button class="btn btn-primary" style="width: 100%; margin-top: 20px;" onclick="closeAdminModal('adminProfileModal')">Close</button>
+    </div>
+</div>
+
 <header class="navbar">
-    <h1>EventFlow — Admin</h1>
+    <div class="navbar-content">
+        <h1>EventFlow — Admin</h1>
+        <div class="navbar-buttons">
+            <button class="btn-profile" onclick="openAdminProfile()">👤 Profile</button>
+            <button class="btn-logout" onclick="logoutAdmin()">Logout</button>
+        </div>
+    </div>
 </header>
 
 <main class="container">
@@ -50,7 +83,7 @@
     <section class="form-section">
         <h2>Create New Event</h2>
 
-        <form class="event-form">
+        <form class="event-form" id="createEventForm">
             <input type="text" placeholder="Event Name" required>
             <input type="text" placeholder="Club Name" required>
             <input type="datetime-local" required>
@@ -65,6 +98,8 @@
 <footer class="footer">
     © 2026 EventFlow. All rights reserved.
 </footer>
+
+<script src="../JS/admin.js"></script>
 
 </body>
 </html>
