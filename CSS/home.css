@@ -2,11 +2,24 @@
     box-sizing: border-box;
 }
 
+:root{
+    --bg: #f4f6fb;
+    --nav-grad-from: #1f2937;
+    --nav-grad-to: #111827;
+    --primary-1: #2563eb;
+    --primary-2: #1d4ed8;
+    --muted: #666666;
+    --card-bg: #ffffff;
+    --radius: 14px;
+    --font: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+}
+
 body{
     margin: 0;
-    font-family: "Segoe UI", Arial, sans-serif;
-    background: #f4f6fb;
+    font-family: var(--font);
+    background: linear-gradient(180deg, #f8fafc, var(--bg));
     color: #222;
+    -webkit-font-smoothing:antialiased;
 }
 
 nav{
@@ -80,7 +93,8 @@ main{
 .card-buttons {
     display: flex;
     gap: 10px;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: center;
 }
 
 .btn{
@@ -92,6 +106,11 @@ main{
     cursor: pointer;
     transition: all 0.3s ease;
     font-weight: 600;
+}
+
+.btn:focus{
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
 }
 
 .btn-primary{
@@ -234,6 +253,13 @@ footer{
     color: #9ca3af;
     text-align: center;
     padding: 15px;
+}
+
+/* small container utility */
+.container-max{
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
 
 /* Responsive Design */

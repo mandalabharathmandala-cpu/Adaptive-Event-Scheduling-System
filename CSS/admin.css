@@ -5,6 +5,14 @@
     font-family: "Segoe UI", Arial, Helvetica, sans-serif;
 }
 
+:root{
+    --primary-dark: #063da2;
+    --primary-light: #0493e0;
+    --glass: rgba(255,255,255,0.08);
+    --card-radius: 12px;
+    --font: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+}
+
 body {
     background: linear-gradient(135deg, #7ca7f8, #63c2f5);
     color: #ffffff;
