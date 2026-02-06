@@ -7,6 +7,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./CSS/home.css">
+    <!-- reCAPTCHA v3 -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body>
 
@@ -48,6 +50,7 @@
         <form id="userSigninForm">
             <input type="email" placeholder="Email Address" required>
             <input type="password" placeholder="Password" required>
+            <div class="g-recaptcha" data-sitekey="YOUR_RECAPTCHA_SITE_KEY" data-callback="onUserSigninCaptchaSuccess" data-expired-callback="onCaptchaExpired"></div>
             <button type="submit" class="btn btn-primary">Sign In</button>
             <p class="form-link">Don't have an account? <a href="#" onclick="switchModal('userSigninModal', 'userSignupModal')">Sign Up</a></p>
         </form>
@@ -79,6 +82,7 @@
         <form id="adminSigninForm">
             <input type="text" placeholder="Admin ID" required>
             <input type="password" placeholder="Password" required>
+            <div class="g-recaptcha" data-sitekey="YOUR_RECAPTCHA_SITE_KEY" data-callback="onAdminSigninCaptchaSuccess" data-expired-callback="onCaptchaExpired"></div>
             <button type="submit" class="btn btn-primary">Sign In</button>
         </form>
     </div>

@@ -1,3 +1,22 @@
+// CAPTCHA Token Variables
+let userSigninCaptchaToken = null;
+let adminSigninCaptchaToken = null;
+
+// CAPTCHA Callbacks
+function onUserSigninCaptchaSuccess(token) {
+    userSigninCaptchaToken = token;
+}
+
+function onAdminSigninCaptchaSuccess(token) {
+    adminSigninCaptchaToken = token;
+}
+
+function onCaptchaExpired() {
+    userSigninCaptchaToken = null;
+    adminSigninCaptchaToken = null;
+    alert("CAPTCHA expired. Please verify again.");
+}
+
 // Open User Sign In Modal
 function openUserSignin() {
     document.getElementById("userSigninModal").style.display = "block";
@@ -50,14 +69,54 @@ window.onclick = function(event) {
 document.addEventListener("DOMContentLoaded", function() {
     const userSigninForm = document.getElementById("userSigninForm");
     if (userSigninForm) {
-        userSigninForm.addEventListener("submit", function(e) {
+        userSigninForm.addEventListener("submit", async function(e) {
             e.preventDefault();
+            
+            // Check CAPTCHA
+            if (!userSigninCaptchaToken) {
+                alert("Please verify CAPTCHA");
+                return;
+            }
+            
             const email = this.querySelector('input[type="email"]').value;
             const password = this.querySelector('input[type="password"]').value;
-            console.log("User Sign In:", { email, password });
-            alert("User Sign In Successful! Redirecting...");
-            // Redirect to user dashboard
-            window.location.href = "pages/user.html";
+            
+            try {
+                const response = await fetch('http://localhost:3000/api/auth/signin', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ 
+                        email, 
+                        password,
+                        captchaToken: userSigninCaptchaToken 
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('userType', 'user');
+                    alert("Sign In Successful! Redirecting...");
+                    window.location.href = "pages/user.html";
+                } else {
+                    alert(data.message || "Sign in failed");
+                    // Reset CAPTCHA
+                    userSigninCaptchaToken = null;
+                    if (window.grecaptcha) {
+                        grecaptcha.reset();
+                    }
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                alert("Network error. Please try again.");
+                userSigninCaptchaToken = null;
+                if (window.grecaptcha) {
+                    grecaptcha.reset();
+                }
+            }
         });
     }
 
@@ -87,14 +146,54 @@ document.addEventListener("DOMContentLoaded", function() {
     // Handle Admin Sign In Form
     const adminSigninForm = document.getElementById("adminSigninForm");
     if (adminSigninForm) {
-        adminSigninForm.addEventListener("submit", function(e) {
+        adminSigninForm.addEventListener("submit", async function(e) {
             e.preventDefault();
+            
+            // Check CAPTCHA
+            if (!adminSigninCaptchaToken) {
+                alert("Please verify CAPTCHA");
+                return;
+            }
+            
             const adminId = this.querySelector('input[placeholder="Admin ID"]').value;
             const password = this.querySelector('input[type="password"]').value;
-            console.log("Admin Sign In:", { adminId, password });
-            alert("Admin Sign In Successful! Redirecting...");
-            // Redirect to admin dashboard
-            window.location.href = "pages/admin.html";
+            
+            try {
+                const response = await fetch('http://localhost:3000/api/auth/admin-signin', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ 
+                        adminId, 
+                        password,
+                        captchaToken: adminSigninCaptchaToken 
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('userType', 'admin');
+                    alert("Admin Sign In Successful! Redirecting...");
+                    window.location.href = "pages/admin.html";
+                } else {
+                    alert(data.message || "Sign in failed");
+                    // Reset CAPTCHA
+                    adminSigninCaptchaToken = null;
+                    if (window.grecaptcha) {
+                        grecaptcha.reset();
+                    }
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                alert("Network error. Please try again.");
+                adminSigninCaptchaToken = null;
+                if (window.grecaptcha) {
+                    grecaptcha.reset();
+                }
+            }
         });
     }
 });
