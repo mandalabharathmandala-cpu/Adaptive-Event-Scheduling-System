@@ -49,24 +49,82 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             const adminId = this.querySelector('input[placeholder="Admin ID"]').value;
             const password = this.querySelector('input[type="password"]').value;
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const form = this;
             
-            // Basic validation (in real app, verify with server)
-            if (password.length < 6) {
-                alert('Invalid credentials!');
-                return;
-            }
+            // Show loading state
+            submitBtn.classList.add('loading', 'signin-btn');
+            submitBtn.textContent = '⟳ Signing in...'; // Using simple character instead of spinner
+            submitBtn.disabled = true;
+            
+            // Simulate authentication delay
+            setTimeout(function() {
+                // Basic validation (in real app, verify with server)
+                if (password.length < 6) {
+                    // Error animation
+                    form.classList.add('signin-error');
+                    submitBtn.classList.remove('loading');
+                    submitBtn.textContent = 'Sign In';
+                    submitBtn.disabled = false;
+                    
+                    // Show error message
+                    showSigninError('Invalid credentials! Password must be at least 6 characters.');
+                    
+                    // Remove error class after animation
+                    setTimeout(function() {
+                        form.classList.remove('signin-error');
+                    }, 500);
+                    return;
+                }
+                
+                // Reset inputs
+                const inputs = form.querySelectorAll('input');
+                inputs.forEach(input => input.classList.remove('signin-error'));
 
-            // Store admin data
-            const adminData = {
-                adminId: adminId,
-                name: 'Administrator ' + adminId,
-                eventsCreated: 0
-            };
-            
-            localStorage.setItem('adminUser', JSON.stringify(adminData));
-            alert('Admin Sign In Successful!');
-            closeAdminModal('adminAuthModal');
+                // Store admin data
+                const adminData = {
+                    adminId: adminId,
+                    name: 'Administrator ' + adminId,
+                    eventsCreated: 0
+                };
+                
+                localStorage.setItem('adminUser', JSON.stringify(adminData));
+                
+                // Success animation
+                submitBtn.classList.remove('loading');
+                submitBtn.textContent = '✓ Success!';
+                submitBtn.style.background = 'linear-gradient(135deg, #4caf50, #45a049)';
+                
+                // Close modal with delay for animation
+                setTimeout(function() {
+                    closeAdminModal('adminAuthModal');
+                    submitBtn.textContent = 'Sign In';
+                    submitBtn.style.background = '';
+                }, 500);
+            }, 1000); // 1 second delay to simulate server response
         });
+    }
+    
+    // Helper function to show signin error
+    function showSigninError(message) {
+        const form = document.getElementById('adminSigninForm');
+        let errorDiv = form.querySelector('.error-message');
+        
+        if (!errorDiv) {
+            errorDiv = document.createElement('div');
+            errorDiv.className = 'error-message';
+            errorDiv.style.cssText = 'animation: slideInSuccess 0.3s ease-out; padding: 10px; margin-bottom: 10px; background-color: #ff6b6b; color: white; border-radius: 6px; text-align: center; font-size: 0.85rem; font-weight: 600;';
+            form.insertBefore(errorDiv, form.firstChild);
+        }
+        
+        errorDiv.textContent = message;
+        
+        // Remove error after 3 seconds
+        setTimeout(function() {
+            if (errorDiv && errorDiv.parentNode) {
+                errorDiv.remove();
+            }
+        }, 3000);
     }
 
     // Handle Create Event Form
