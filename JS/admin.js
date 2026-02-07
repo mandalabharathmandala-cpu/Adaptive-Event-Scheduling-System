@@ -24,6 +24,46 @@ function logoutAdmin() {
     window.location.href = '../home.html';
 }
 
+// CAPTCHA Functions
+let adminCaptchaAnswer = 0;
+
+function generateAdminCaptcha() {
+    const num1 = Math.floor(Math.random() * 10) + 1;
+    const num2 = Math.floor(Math.random() * 10) + 1;
+    const operators = ['+', '-', '*'];
+    const operator = operators[Math.floor(Math.random() * operators.length)];
+    
+    adminCaptchaAnswer = eval(num1 + operator + num2);
+    
+    const questionElement = document.getElementById('adminCaptchaQuestion');
+    questionElement.textContent = `What is ${num1} ${operator} ${num2}?`;
+    
+    // Clear previous answer
+    const captchaInput = document.getElementById('adminCaptchaInput');
+    if (captchaInput) {
+        captchaInput.value = '';
+        captchaInput.classList.remove('captcha-error', 'captcha-success');
+    }
+}
+
+function validateAdminCaptcha() {
+    const captchaInput = document.getElementById('adminCaptchaInput');
+    const userAnswer = parseInt(captchaInput.value);
+    
+    if (userAnswer === adminCaptchaAnswer) {
+        captchaInput.classList.remove('captcha-error');
+        captchaInput.classList.add('captcha-success');
+        return true;
+    } else {
+        captchaInput.classList.remove('captcha-success');
+        captchaInput.classList.add('captcha-error');
+        setTimeout(() => {
+            captchaInput.classList.remove('captcha-error');
+        }, 500);
+        return false;
+    }
+}
+
 // Close modal when clicking outside
 window.onclick = function(event) {
     const authModal = document.getElementById('adminAuthModal');
@@ -40,6 +80,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Show auth modal if not logged in
     if (!adminUser) {
         document.getElementById('adminAuthModal').style.display = 'block';
+        generateAdminCaptcha(); // Generate initial CAPTCHA
     }
 
     // Handle Admin Sign In Form
@@ -52,9 +93,15 @@ document.addEventListener('DOMContentLoaded', function() {
             const submitBtn = this.querySelector('button[type="submit"]');
             const form = this;
             
+            // Validate CAPTCHA first
+            if (!validateAdminCaptcha()) {
+                showSigninError('Incorrect CAPTCHA. Please try again.');
+                return;
+            }
+            
             // Show loading state
             submitBtn.classList.add('loading', 'signin-btn');
-            submitBtn.textContent = '⟳ Signing in...'; // Using simple character instead of spinner
+            submitBtn.textContent = '⟳ Signing in...';
             submitBtn.disabled = true;
             
             // Simulate authentication delay

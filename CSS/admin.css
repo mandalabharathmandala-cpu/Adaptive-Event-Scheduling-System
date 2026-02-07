@@ -278,6 +278,82 @@ body {
     font-weight: 600;
 }
 
+/* CAPTCHA Styles */
+.captcha-section {
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    animation: slideInSuccess 0.4s ease-out;
+}
+
+.captcha-challenge {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    background-color: white;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    min-height: 40px;
+}
+
+#adminCaptchaQuestion {
+    font-weight: 600;
+    color: #333;
+    font-size: 0.95rem;
+}
+
+.captcha-refresh {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.captcha-refresh:hover {
+    background-color: #e5e7eb;
+    transform: rotate(180deg);
+}
+
+.captcha-refresh:active {
+    transform: rotate(180deg) scale(0.95);
+}
+
+#adminCaptchaInput {
+    padding: 12px 15px;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    font-family: inherit;
+    color: #333;
+    width: 100%;
+}
+
+#adminCaptchaInput:focus {
+    outline: none;
+    border-color: #063da2;
+    box-shadow: 0 0 0 3px rgba(6, 61, 162, 0.1);
+}
+
+#adminCaptchaInput.captcha-error {
+    border-color: #ff4444;
+    animation: shake 0.5s ease-in-out;
+}
+
+#adminCaptchaInput.captcha-success {
+    border-color: #4caf50;
+    background-color: #f1f8f5;
+}
+
 /* CONTAINER */
 .container {
     padding: 30px;

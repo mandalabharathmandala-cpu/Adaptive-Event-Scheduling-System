@@ -39,6 +39,46 @@ function logoutUser() {
     location.reload();
 }
 
+// CAPTCHA Functions
+let userCaptchaAnswer = 0;
+
+function generateUserCaptcha() {
+    const num1 = Math.floor(Math.random() * 10) + 1;
+    const num2 = Math.floor(Math.random() * 10) + 1;
+    const operators = ['+', '-', '*'];
+    const operator = operators[Math.floor(Math.random() * operators.length)];
+    
+    userCaptchaAnswer = eval(num1 + operator + num2);
+    
+    const questionElement = document.getElementById('userCaptchaQuestion');
+    questionElement.textContent = `What is ${num1} ${operator} ${num2}?`;
+    
+    // Clear previous answer
+    const captchaInput = document.getElementById('userCaptchaInput');
+    if (captchaInput) {
+        captchaInput.value = '';
+        captchaInput.classList.remove('captcha-error', 'captcha-success');
+    }
+}
+
+function validateUserCaptcha() {
+    const captchaInput = document.getElementById('userCaptchaInput');
+    const userAnswer = parseInt(captchaInput.value);
+    
+    if (userAnswer === userCaptchaAnswer) {
+        captchaInput.classList.remove('captcha-error');
+        captchaInput.classList.add('captcha-success');
+        return true;
+    } else {
+        captchaInput.classList.remove('captcha-success');
+        captchaInput.classList.add('captcha-error');
+        setTimeout(() => {
+            captchaInput.classList.remove('captcha-error');
+        }, 500);
+        return false;
+    }
+}
+
 // Close modal when clicking outside
 window.onclick = function(event) {
     const authModal = document.getElementById('authModal');
@@ -60,6 +100,14 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!currentUser) {
         document.getElementById('authModal').style.display = 'block';
     }
+    
+    // Generate CAPTCHA when signin modal opens
+    const signinModal = document.getElementById('signinModal');
+    const originalOpenSignin = openSignin;
+    window.openSignin = function() {
+        originalOpenSignin();
+        generateUserCaptcha();
+    };
 
     // Handle Sign In Form
     const signinForm = document.getElementById('signinForm');
@@ -68,6 +116,12 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             const email = this.querySelector('input[type="email"]').value;
             const password = this.querySelector('input[type="password"]').value;
+            
+            // Validate CAPTCHA first
+            if (!validateUserCaptcha()) {
+                alert('Incorrect CAPTCHA. Please try again.');
+                return;
+            }
             
             // Store user data (in real app, verify with server)
             const userData = {
